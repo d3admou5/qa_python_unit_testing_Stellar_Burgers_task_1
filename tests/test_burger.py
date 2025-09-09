@@ -64,7 +64,7 @@ class TestBurger:
         assert burger.get_price() == expected
 
     def test_get_receipt_contains_bun_and_ingredients(self):
-        """Проверяем, что get_receipt возвращает чек с булочкой и ингредиентами"""
+        """Проверяем, что get_receipt возвращает чек с булочкой и ингредиентом"""
         burger = Burger()
         bun = Mock()
         bun.get_name.return_value = "Test Bun"
@@ -77,8 +77,11 @@ class TestBurger:
         ingredient.get_price.return_value = 50
         burger.add_ingredient(ingredient)
 
-        receipt = burger.get_receipt()
+        expected_receipt = (
+            "(==== Test Bun ====)\n"
+            "= sauce Ketchup =\n"
+            "(==== Test Bun ====)\n\n"
+            f"Price: {burger.get_price()}"
+        )
 
-        assert "(==== Test Bun ====)" in receipt
-        assert "= sauce Ketchup =" in receipt
-        assert f"Price: {burger.get_price()}" in receipt
+        assert expected_receipt == burger.get_receipt()
